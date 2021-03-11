@@ -1,0 +1,94 @@
+<!-- <br>
+<br>
+<div class="container-md">
+  <h4><b>Filter box </b> </h4>
+  <div class="row align-items-start">
+    <div class="col-md-4">
+      <div class="content" role="main">
+        <div class="card">
+          <div class="form-group" form="form">
+            <label for="search-text">Book Name</label>
+            <input type="email" class="form-control" id="search-text" aria-describedby="search-text"
+              [(ngModel)]="searchByBook" placeholder="Enter bookName" autofocus>
+          </div>
+          <div class="form-group">
+            <label for="searchByAuthor">Author Name</label>
+            <input type="email" class="form-control" id="search-text" aria-describedby="searchByAuthor"
+              [(ngModel)]="searchByAuthor" placeholder="Enter authorName" autofocus>
+          </div>
+          <div class="form-group">
+            <label for="searchByAuthor">Publisher Name</label>
+            <input type="email" class="form-control" id="search-text" aria-describedby="searchByAuthor"
+              [(ngModel)]="searchByPublisher" placeholder="Enter authorName" autofocus>
+          </div>
+          <div class="margin-left row align-items-start">
+            <div>
+              <button class="margin-left:20px width: 50 px" class="btn btn-info hidden-xs">Search</button>
+            </div>
+            &nbsp;
+            <div>
+              <button class="margin-left: 20px width: 50 px" class="btn btn-light hidden-xs">Reset</button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+    <div class="col-md-8">
+      <div class="content" role="main">
+        <div class="card">
+          <ul class="list-group list-group-flush">
+            <table class="table table-bordered table-striped table-responsive btn-cyan">
+              <tr>
+                <th> No </th>
+                <th>Book name</th>
+                <th>Author name</th>
+                <th>Publisher Name</th>
+              </tr>
+              <ng-container class="list-group-item"
+                *ngFor="let book of books| filter: searchByBook: searchByAuthor: searchByPublisher">
+                <tr>
+                  <td>{{book.bid}}</td>
+                  <td>{{book.bookName}}</td>
+                  <td>{{book.authorName}}</td>
+                  <td>{{book.publisherName}}</td>
+                </tr>
+              </ng-container>
+            </table>
+          </ul>
+        </div>
+
+      </div>
+
+    </div> -->
+
+<div id="search-component">
+  <!-- search by category -->
+  <ng-select [items]="CategoryName" [searchFn]="customSearchFn" bindLabel="name" placeholder="Select categoryname"
+    [ngModel]="searchText">
+  </ng-select>
+
+  <ul class="search-result">
+    <table class="table table-bordered table-striped table-responsive btn-cyan">
+      <tr>
+        <th> No </th>
+        <th>Book name</th>
+        <th>Author name</th>
+        <th>Publisher Name</th>
+      </tr>
+      <ng-container class="list-group-item" *ngFor="let book of books|async">
+
+        <tr>
+          <td>{{book.bid}}</td>
+          <td>{{book.bookName}}</td>
+          <td>{{book.authorName}}</td>
+          <td>{{book.publisherName}}</td>
+        </tr>
+
+      </ng-container>
+    </table>
+
+  </ul>
+</div>

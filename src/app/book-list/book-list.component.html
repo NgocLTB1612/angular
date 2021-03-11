@@ -1,94 +1,270 @@
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h1 style="text-align: center">List of Books</h1><br>
+<br>
+<br>
+<div class="container-md ">
+  <div class="p-3 mb-2 bg-light text-dark">
+    <h3>Book Information Search</h3>
+    <!-- <p class="lead">
+      Welcome to Book Management System!
+    </p> -->
+    <br>
+    <div class="card" class="row" class="row align-items-start">
+      <div class="col form-group" form="form">
+        <label for="search-text">Book Name</label>
+        <input type="bookName" class="form-control" aria-describedby="search-text" #searchBox id="search-box"
+          [(ngModel)]="searchByBook" placeholder="--Enter bookName--" autofocus>
+      </div> &nbsp;&nbsp;
+      <div class="col form-group">
+        <label for="searchByAuthor">Author Name</label>
+        <input type="bookName" class="form-control" aria-describedby="search-text" #searchBox id="search-box"
+          [(ngModel)]="searchByAuthor" placeholder="--Enter authorName--" autofocus>
+      </div> &nbsp;&nbsp;
+      <div class="col form-group">
+        <label for="searchByAuthor">Publisher Name</label>
+        <input type="bookName" class="form-control" aria-describedby="search-text" #searchBox id="search-box"
+          [(ngModel)]="searchByPublisher" placeholder="--Enter publisherName--" autofocus>
+      </div>
+    </div>
+    <div class="row align-items-start">
+      <div class="col">
+        <label for="search-box"><i>Search By Multiple Fields</i></label>
+        <input id="search-box" placeholder="-- Enter keyword --" class="form-control " aria-describedby="search-text"
+          [(ngModel)]="term" />
+      </div>
+      <div class="col">
+        <label for="searchByAuthor">Category Name</label>
+        <ng-select [items]="CategoryName" [searchFn]="customSearchFn" bindLabel="name" placeholder="Select categoryname"
+          [ngModel]="searchByCagName" placeholder="--Select CagName--" autofocus>
+        </ng-select>
+
+      </div>
+    </div>
+
+
+    <div class="card" class="row-md" class="row align-items-start">
+      <div>
+        <button (click)="search()" class="col margin-left:20px width: 50 px"
+          class="btn btn-info hidden-xs">Search</button>
+      </div>
+      &nbsp;
+      <div>
+        <button (click)="reset()" class="col margin-left: 20px width: 50 px"
+          class="btn btn-light hidden-xs">Reset</button>
+      </div>
+    </div>
+
+
+  </div>
+  <div class="panel panel-default">
+    <br>
+    <br>
+    <div>
+      <div class="panel-heading" class="p-3 mb-2 bg-transparent text-dark border-start">
+
         <div class="row" [hidden]="!deleteMessage">
 
-            <div class="col-sm-4"></div>
-            <div class="col-sm-4" style="text-align: center">
-                <div class="alert alert-blue alert-dismissible">
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    <strong class = "fs-3" style="text-align: center">Book Deleted</strong>
-                </div>
+          <div class="col-sm-4"></div>
+          <div class="col-sm-4" style="text-align: center">
+            <div class="alert alert-blue alert-dismissible">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <strong class="fs-3" style="text-align: center">Book Deleted</strong>
             </div>
-            <div class="col-sm-4"></div>
+          </div>
+          <div class="col-sm-4"></div>
         </div>
-    </div>
+      </div>
 
-
-    <div class="panel-body">
+      <div class="panel-body">
         <table class="table table-hover table-sm" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
-            <thead class="thead-light">
-                <tr>
-                    <th>Book Name</th>
-                    <th>Author Name</th>
-                    <th>Publisher Name</th>
-                    <th></th>
+          <thead class="thead-light">
+            <tr>
+              <th>No</th>
+              <th>Book Name</th>
+              <th>Author Name</th>
+              <th>Publisher Name</th>
+              <th>Category name</th>
+              <th>Action</th>
 
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let book of books ">
-                    <td>{{book.bookName}}</td>
-                    <td>{{book.authorName}}</td>
-                    <td>{{book.publisherName}}</td>
-                    <td><button (click)="deleteBook(book.bid)" class='btn btn-primary'><i
-                                class="fa fa-futboll-0">Delete</i></button>&nbsp;
-                        <button (click)="updateBook(book.bid)" class='btn btn-info' data-toggle="modal"
-                            data-target="#myModal">Update</button>
-                    </td>
-                </tr>
-            </tbody><br>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let book of data| filter: searchByBook: searchByAuthor: searchByPublisher : searchByCagName ">
+              <td>{{book.bid}}</td>
+              <td>{{book.bookName}}</td>
+              <td>{{book.authorName}}</td>
+              <td>{{book.publisherName}}</td>
+              <td>{{book.category.cag_name}}</td>
+              <td><button class="btn btn-outline-light" mwlConfirmationPopover [popoverTitle]="popoverTitle"
+                  [popoverMessage]="popoverMessage" placement="left" (confirm)="deleteBook(book.bid)"
+                  (cancel)="cancelClicked = true" class='btn btn-danger'><i class="bi bi-trash"><svg
+                      xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash"
+                      viewBox="0 0 16 16">
+                      <path
+                        d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                      <path fill-rule="evenodd"
+                        d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                    </svg></i></button>&nbsp;
+                <button (click)="updateBook(book.bid)" class='btn btn-info' data-toggle="modal"
+                  data-target="#myModal"><i class="bi bi-file-earmark-text">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                      class="bi bi-file-earmark-text" viewBox="0 0 16 16">
+                      <path
+                        d="M5.5 7a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5z" />
+                      <path
+                        d="M9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.5L9.5 0zm0 1v2A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z" />
+                    </svg>
+
+                  </i></button>
+                <button (click)="bookDetails(book.bid)" class="btn btn-cyan-100" style="margin-left: 10px"><i
+                    class="bi bi-eye"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                      class="bi bi-eye" viewBox="0 0 16 16">
+                      <path
+                        d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z" />
+                      <path
+                        d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" />
+                    </svg></i></button>
+              </td>
+            </tr>
+          </tbody><br>
         </table>
-    </div>
-</div>
+      </div>
 
-<div class="modal" id="myModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
+      <!-- Search by category  -->
+
+      <!-- //table pagination
+      <div class="row fw-lighter">
+        Total per Page:
+        <select (change)="handlePageSizeChange($event)">
+          <option *ngFor="let size of pageSizes" [ngValue]="size">
+            {{ size }}
+          </option>
+        </select>
+      </div>
+      <br>
+      <div class="panel-body">
+        <table class="table table-hover table-sm">
+          <thead class="thead-light">
+            <tr>
+              <th>Book Name</th>
+              <th>Author Name</th>
+              <th>Publisher Name</th>
+              <th> Category Name</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container class="list-group-item" *ngFor="let book of data| filter: searchByBook: searchByAuthor: searchByPublisher| paginate : {
+                  itemsPerPage: pageSize,
+                  currentPage: page,
+                  totalItems: count
+                };
+         ">
+              <td>{{book.bookName}}</td>
+              <td>{{book.authorName}}</td>
+              <td>{{book.publisherName}}</td>
+              <td><button (click)="deleteBook(book.bid)" class='btn btn-primary'><i
+                    class="fa fa-futboll-0">Delete</i></button>&nbsp;
+                <button (click)="updateBook(book.bid)" class='btn btn-info' data-toggle="modal"
+                  data-target="#myModal">Update</button>
+                <button (click)="bookDetails(book.bid)" class="btn btn-info" style="margin-left: 10px">Details</button>
+              </td>
+            </ng-container>
+          </tbody><br>
+          <pagination-controls (pageChange)="p = $event"></pagination-controls>
+        </table>
+
+      </div>
+      <div class="row align-items-start">
+        <div class="col-md-4"></div>
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+          <pagination-controls previousLabel="Prev" nextLabel="Next" [responsive]="true"
+            (pageChange)="handlePageChange($event)">
+          </pagination-controls>
+        </div>
+
+      </div> -->
+
+
+      <div class="modal" id="myModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
             <form [formGroup]="bookupdateform" #updbk (ngSubmit)="updateBk(updbk)">
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h3 class="modal-title" style="text-align: center">Update Book</h3>
+              <!-- Modal Header -->
+              <div class="modal-header">
+                <h3 class="modal-title" style="text-align: center">Update Book</h3>
 
-                </div>
+              </div>
 
-                <!-- Modal body -->
-                <div class="modal-body" *ngFor="let book of booklist ">
-                    <div [hidden]="isupdated">
+              <!-- Modal body -->
+              <div class="modal-body" *ngFor="let book of booklist">
+                <div [hidden]="isupdated">
 
-                        <input type="hidden" class="form-control" formControlName="bid" [(ngModel)]="book.bid">
-                        <div class="form-group">
-                            <label for="name">Book Name</label>
-                            <input type="text" class="form-control" formControlName="bookName"
-                                [(ngModel)]="book.bookName">
-                        </div>
-                        <div class="form-group">
-                            <label for="name">Author Name</label>
-                            <input type="text" class="form-control" formControlName="authorName"
-                                [(ngModel)]="book.authorName">
-                        </div>
-                        <div class="form-group">
-                            <label for="name">Publisher Name</label>
-                            <input type="text" class="form-control" formControlName="publisherName"
-                                [(ngModel)]="book.publisherName">
-                        </div>
-
+                  <input type="hidden" class="form-control" formControlName="bid" [(ngModel)]="book.bid">
+                  <div class="form-group">
+                    <label for="bookName">Book Name</label>
+                    <input name="bookName" type="text" class="form-control" formControlName="bookName"
+                      [(ngModel)]="book.bookName">
+                    <div class="alert alert-danger"
+                      *ngIf="bookupdateform.invalid && (bookupdateform.dirty || bookupdateform.touched)"
+                      style="margin-top: 5px;">
+                      <span *ngIf="booksaveform.errors.required">Book Name is Required</span>
 
                     </div>
-                    <div [hidden]="!isupdated">
-                        <h5>Book Updated!</h5>
+                  </div>
+                  <div class="form-group">
+                    <label for="authorName">Author Name</label>
+                    <input name="authorName" type="text" class="form-control" formControlName="authorName"
+                      [(ngModel)]="book.authorName">
+                    <div class="alert alert-danger"
+                      *ngIf="bookupdateform.invalid && (bookupdateform.dirty || bookupdateform.touched)"
+                      style="margin-top: 5px;">
+                      <span *ngIf="booksaveform.errors.required">Book Name is Required</span>
+
                     </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="publisherName">Publisher Name</label>
+                    <input name="publisherName" type="text" class="form-control" formControlName="publisherName"
+                      [(ngModel)]="book.publisherName">
+                    <div class="alert alert-danger"
+                      *ngIf="bookupdateform.invalid && (bookupdateform.dirty || bookupdateform.touched)"
+                      style="margin-top: 5px;">
+                      <span *ngIf="booksaveform.errors.required">Book Name is Required</span>
+
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="cag_name">Category Name</label>
+                    <input name="cag_name" class="form-control" formControlName="cag_name"
+                      [(ngModel)]="book.category.cag_name">
+                    <div class="alert alert-danger"
+                      *ngIf="bookupdateform.invalid && (bookupdateform.dirty || bookupdateform.touched)"
+                      style="margin-top: 5px;">
+                      <span *ngIf="booksaveform.errors.required">Book Name is Required</span>
+
+                    </div>
+                  </div>
+
 
                 </div>
-
-                <!-- Modal footer -->
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" [hidden]="isupdated">Update</button>
-                    <button type="button" class="btn btn-info" data-dismiss="modal"
-                        (click)="changeisUpdate()">Close</button>
+                <div [hidden]="!isupdated">
+                  <h5>Book Updated!</h5>
                 </div>
+
+              </div>
+
+              <!-- Modal footer -->
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-info" [hidden]="isupdated">Update</button>
+                <button type="button" class="btn btn-light" data-dismiss="modal"
+                  (click)="changeisUpdate()">Close</button>
+              </div>
 
             </form>
+          </div>
         </div>
+      </div>
+
+
     </div>
-</div>

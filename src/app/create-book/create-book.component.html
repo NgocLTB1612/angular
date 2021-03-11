@@ -1,64 +1,91 @@
-<h2 style="text-align: center" >Add Book </h2>
+<div class="container">
+  <br>
+  <br>
+
+  <h2 style="text-align: center">Add Book </h2>
 
 
-<div class="row">
+  <div class="row">
     <div class="col-sm-4"></div>
     <div class="col-sm-4">
-        <div [hidden]="submitted" style="width: 400px;">
-            <form [formGroup]="booksaveform" #savebook (ngSubmit)="saveBook(saveBook)">
-                <div class="form-group">
-                    <label for="name">Book Name</label>
-                    <input type="text" class="form-control" formControlName="bookName" data-toggle="tooltip"
-                        data-placement="right" title="Enter Book Name">
-                    <div class="alert alert-danger" *ngIf="(BookName.touched) && (BookName.invalid)"
-                        style="margin-top: 5px;">
-                        <span *ngIf="BookName.errors.required">Book Name is Required</span>
-                        <span *ngIf="BookName.errors.minlength">
-                            MinLength Error
-                        </span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="name">Author Name</label>
-                    <input type="text" class="form-control" formControlName="authorName" data-toggle="tooltip"
-                        data-placement="right" title="Enter Author Name">
-                    <div class="alert alert-danger" *ngIf="(AuthorName.touched) && (AuthorName.invalid)"
-                        style="margin-top: 5px;">
-                        <span *ngIf="AuthorName.errors.required">Author Name is Required</span>
-                        <span *ngIf="AuthorName.errors.minlength">
-                            MinLength Error
-                        </span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="name">Publisher Name</label>
-                    <input type="text" class="form-control" formControlName="publisherName" data-toggle="tooltip"
-                        data-placement="right" title="Enter Publisher Name">
-                    <div class="alert alert-danger" *ngIf="(PublisherName.touched) && (PublisherName.invalid)"
-                        style="margin-top: 5px;">
-                        <span *ngIf="PublisherName.errors.required">Publisher Name is Required</span>
-                        <span *ngIf="PublisherName.errors.minlength">
-                            MinLength Error
-                        </span>
-                    </div>
-                </div>
+      <div [hidden]="submitted" style="width: 400px;">
+        <form [formGroup]="booksaveform" #savebook (ngSubmit)="saveBook(saveBook)">
+          <div class="form-group">
+            <label for="bookName">Book Name</label>
+            <input required minlength="4" [(ngModel)]="book.bookName" id="bookName" name="bookName" type="text"
+              class="form-control" formControlName="bookName" data-toggle="tooltip" data-placement="right"
+              title="Enter Book Name">
+            <div class="alert alert-danger" *ngIf="booksaveform.invalid && (booksaveform.dirty || booksaveform.touched)"
+              style="margin-top: 5px;">
+              <span *ngIf="booksaveform.errors.required">Book Name is Required</span>
+              <span *ngIf="booksaveform.errors.minlength">
+                MinLength Error
+              </span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="name">Author Name</label>
+            <input type="text" class="form-control" formControlName="authorName" data-toggle="tooltip"
+              data-placement="right" title="Enter Author Name">
+            <div class="alert alert-danger" *ngIf="booksaveform.invalid && (booksaveform.dirty || booksaveform.touched)"
+              style="margin-top: 5px;">
+              <span *ngIf="booksaveform.errors.required">Book Name is Required</span>
+              <span *ngIf="booksaveform.errors.minlength">
+                MinLength Error
+              </span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="publisherName">Publisher Name</label>
+            <input type="text" class="form-control" formControlName="publisherName" data-toggle="tooltip"
+              data-placement="right" title="Enter Publisher Name">
+            <div class="alert alert-danger" *ngIf="booksaveform.invalid && (booksaveform.dirty || booksaveform.touched)"
+              style="margin-top: 5px;">
+              <span *ngIf="booksaveform.errors.required">Book Name is Required</span>
+              <span *ngIf="booksaveform.errors.minlength">
+                MinLength Error
+              </span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="cag_name">Category Name</label>
+            <ng-select formControlName="cag_name" [items]="CategoryName" bindLabel="name" [ngModel]=""
+              placeholder="--Select Category Name--" autofocus>
+            </ng-select>
+            <div class="alert alert-danger" *ngIf="booksaveform.invalid && (booksaveform.dirty || booksaveform.touched)"
+              style="margin-top: 5px;">
+              <span *ngIf="booksaveform.errors.required">Book Name is Required</span>
+              <span *ngIf="booksaveform.errors.minlength">
+                MinLength Error
+              </span>
+            </div>
+          </div>
 
 
 
-                <button type="submit" class="btn btn-info">Submit</button>
-            </form>
-        </div>
+          <button type="submit" class="btn btn-info">Submit</button>
+        </form>
+      </div>
     </div>
     <div class="col-sm-4"></div>
-</div>
-<div class="row">
+  </div>
+  <div class="row">
     <div class="col-sm-4"></div>
     <div class="col-sm-4">
-        <div [hidden]="!submitted">
-            <br><br>
-            <h4 class="fs-5 fw-light" >Book Added SuccessFully!</h4> <br>
-            <button (click)="addBookForm()" class='btn btn-primary'>Add More Book</button>
-        </div>
+      <div [hidden]="!submitted">
+        <br><br>
+        <h4 class="fs-5 fw-light">Book Added SuccessFully!</h4> <br>
+        <button (click)="addBookForm()" class='btn btn-info'>Add More Book</button>
+      </div>
     </div>
-    <div class="col-sm-4"></div>
+    <br>
+    <br>
+
+    <div class="col-sm-4">
+      <button (click)="list()" class="btn btn-light" place="right">Back to Book List Page</button><br>
+    </div>
+  </div>
+
+
+
 </div>

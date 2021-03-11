@@ -1,0 +1,28 @@
+<div class="container-md">
+  <br>
+  <br>
+  <div class="row">
+    <div class="col-sm-3 border border-info">
+
+    </div>
+    <div class="col-sm-9" *ngIf="currentBook.bid">
+
+      <h3>{{currentBook.bookName | uppercase}}</h3>
+      <hr />
+      <div>
+        <p> AuthorName: {{currentBook.authorName }} </p>
+        <p> PublisherName: {{currentBook.publisherName }} </p>
+
+        <br>
+        <br>
+        <button (click)="list()" class="btn btn-light">Back to Book List</button><br>
+
+
+      </div>
+
+    </div>
+    <br>
+    <br>
+
+
+  </div>
